@@ -5,22 +5,22 @@ $:.uniq!
 require 'rubygems'
 require 'rake'
 
-require File.join(File.dirname(__FILE__), 'lib/mrz', 'version')
+require File.join(File.dirname(__FILE__), 'lib/mrtd', 'version')
 
-PKG_DISPLAY_NAME   = 'MRZ'
+PKG_DISPLAY_NAME   = 'MRTD'
 PKG_NAME           = PKG_DISPLAY_NAME.downcase
-PKG_VERSION        = MRZ::VERSION::STRING
+PKG_VERSION        = MRTD::VERSION::STRING
 PKG_FILE_NAME      = "#{PKG_NAME}-#{PKG_VERSION}"
 
 RELEASE_NAME       = "REL #{PKG_VERSION}"
-GIT_HUB_URL        = "https://github.com/sporkmonger/mrz"
+GIT_HUB_URL        = "https://github.com/bitpesa/mrtd"
 
 PKG_AUTHOR         = 'Bob Aman'
 PKG_AUTHOR_EMAIL   = 'bob@sporkmonger.com'
 PKG_HOMEPAGE       = GIT_HUB_URL
 PKG_SUMMARY        = 'Package Summary'
 PKG_DESCRIPTION    = <<-TEXT
-MRZ is a toolbox for working with the machine-readable zones in passport and ID documents. A separate OCR tool is typically required to process an image into text which the MRZ library then attempts to process and extract data from.
+MRTD is a toolbox for working with the machine-readable zones in passport and ID documents. A separate OCR tool is typically required to process an image into text which the MRTD library then attempts to process and extract data from.
 TEXT
 
 PKG_FILES = FileList[

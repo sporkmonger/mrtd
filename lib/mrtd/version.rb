@@ -1,4 +1,4 @@
-# Copyright 2014 Bob Aman
+# Copyright 2014 BitPesa
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -13,8 +13,8 @@
 #    limitations under the License.
 
 # Used to prevent the class/module from being loaded more than once
-unless defined? MRZ::VERSION
-  module MRZ
+unless defined? MRTD::VERSION
+  class MRTD
     module VERSION
       MAJOR = 0
       MINOR = 1

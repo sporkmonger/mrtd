@@ -10,3 +10,4 @@ pkg
 specdoc
 wiki
 /.idea
+spec/confidential

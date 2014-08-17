@@ -315,10 +315,10 @@ class MRTD
       '<' => [],
       '0' => ['O', 'D', 'C', 'G', 'Q', '8'],
       '1' => ['I', 'L'],
-      '2' => ['R', 'S'],
-      '3' => ['8', 'B'],
+      '2' => ['R', 'S', 'Z'],
+      '3' => ['8', 'B', '5'],
       '4' => [],
-      '5' => ['S', 'B'],
+      '5' => ['S', 'B', '3'],
       '6' => [],
       '7' => [],
       '8' => ['B', '0'],
@@ -336,7 +336,7 @@ class MRTD
       'K' => ['R'],
       'L' => ['I', '1', 'J'],
       'M' => ['W', 'N'],
-      'N' => ['V', 'W', 'M', 'Z'],
+      'N' => ['V', 'W', 'M'],
       'O' => ['0', 'D', 'C', 'G', 'Q'],
       'P' => ['F', 'R'],
       'Q' => ['G', '0', 'O', 'C'],
@@ -348,11 +348,15 @@ class MRTD
       'W' => ['M', 'V', 'N'],
       'X' => [],
       'Y' => ['V'],
-      'Z' => ['N']
+      'Z' => ['2']
     }
 
     def initialize(text)
-      @text = text
+      if text.respond_to?(:to_str)
+        @text = text.to_str
+      else
+        raise ArgumentError, "Expected String, got #{text.class}"
+      end
       normalize_text!
       normalize_document_code!
       normalize_issuing_country!
@@ -1281,7 +1285,12 @@ class MRTD
             (check_digit == nil || self.generate_check_digit(candidate) == check_digit) &&
             conditions.all? { |cond| cond.call(candidate, field_pattern, check_digit) }
           # We've got a match for all success conditions!
-          candidates << candidate
+          if self.levenshtein_distance(candidate, field) == 1
+            # And it's a single-character change!
+            return candidate
+          else
+            candidates << candidate
+          end
         end
         # Increment the least-significant digit's place, then carry
         indices[-1] += 1

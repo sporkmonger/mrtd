@@ -375,6 +375,7 @@ class MRTD
     attr_reader :text
 
     def normalize_text!
+      raise ArgumentError, "Missing MRZ text." if @text.nil?
       candidate = @text.dup
       candidate_lines = candidate.strip.split("\n")
       line_count = candidate_lines.count

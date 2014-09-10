@@ -57,8 +57,9 @@ class MRTD
       output_path.gsub(/\.box$/, '') + ' ' +
       options.join(' ')
     )
-    success = system(tesseract_command)
-    if success
+    # Silence all output.
+    `#{tesseract_command} 2>&1`
+    if $? && $?.exitstatus == 0
       result = File.read(output_path)
       output_file.close
       output_file.delete

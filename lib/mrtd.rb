@@ -247,6 +247,19 @@ class MRTD
       end
       candidates << window.join("\n") if possible
     end
+
+    squashed_candidate = filtered.gsub(/[\s\n]/, '')
+    squashed_passport_regexp = /[PA].[A-Z<]{3}.{39}.{10}[A-Z<]{3}.{7}[MFX<].{7}.{15}[0-9<]/
+    squashed_passport = squashed_candidate[squashed_passport_regexp, 0]
+    if squashed_passport && squashed_passport != ''
+      candidates << "#{squashed_passport[0...44]}\n#{squashed_passport[44...88]}\n"
+    end
+    squashed_id_regexp = /[AI].[A-Z<]{3}.{25}[0-9<]{7}[MFX<][0-9<]{7}.{14}[0-9<].{30}/
+    squashed_id = squashed_candidate[squashed_id_regexp, 0]
+    if squashed_id && squashed_id != ''
+      candidates << "#{squashed_id[0...30]}\n#{squashed_id[30...60]}\n#{squashed_id[60...90]}\n"
+    end
+
     # This is pretty inefficient because of the number of permutations needed.
     best_match = candidates.detect { |c| (cached_mrzs[c] ||= MRZ.new(c)) rescue nil }
     best_match = candidates.last unless best_match

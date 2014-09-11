@@ -19,6 +19,9 @@ require 'fileutils'
 
 class MRTD
   def initialize(image_path)
+    if !File.exist?(image_path)
+      raise ArgumentError, "Image does not exist."
+    end
     @image_path = image_path
     @mrz_box = MRTD.process_mrz(image_path)
     @mrz_ocr_text = MRTD.collapse_box(@mrz_box)

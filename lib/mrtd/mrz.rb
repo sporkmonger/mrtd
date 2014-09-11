@@ -393,17 +393,29 @@ class MRTD
           EXPECTED_LINE_LENGTHS.include?(ll)
         end
       end
-      if !EXPECTED_LINE_LENGTHS.include?(line_length)
-        raise ArgumentError, "Could not determine MRZ line length: #{@text}"
+      if EXPECTED_LINE_LENGTHS.include?(line_length)
+        @text = candidate_lines.map do |line|
+          stripped_line = line.upcase.gsub(/[^0-9A-Z<]/, '')
+          if stripped_line.length != line_length
+            break
+          end
+          stripped_line.strip + "\n"
+        end.join('')
+        return if @text && @text != ''
       end
-
-      @text = candidate_lines.map do |line|
-        stripped_line = line.upcase.gsub(/[^0-9A-Z<]/, '')
-        if stripped_line.length != line_length
-          raise ArgumentError, "Could not convert to expected MRZ line length:\n#{@text}"
-        end
-        stripped_line.strip + "\n"
-      end.join('')
+      squashed_candidate = candidate.gsub(/[\s\n]/, '')
+      squashed_passport_regexp = /[PA].[A-Z<]{3}.{39}.{10}[A-Z<]{3}.{7}[MFX<].{7}.{15}[0-9<]/
+      squashed_passport = squashed_candidate[squashed_passport_regexp, 0]
+      if squashed_passport && squashed_passport != ''
+        @text = "#{squashed_passport[0...44]}\n#{squashed_passport[44...88]}\n"
+        return
+      end
+      squashed_id_regexp = /[AI].[A-Z<]{3}.{25}[0-9<]{7}[MFX<][0-9<]{7}.{14}[0-9<].{30}/
+      squashed_id = squashed_candidate[squashed_id_regexp, 0]
+      if squashed_id && squashed_id != ''
+        @text = "#{squashed_id[0...30]}\n#{squashed_id[30...60]}\n#{squashed_id[60...90]}\n"
+        return
+      end
     end
     private :normalize_text!
 

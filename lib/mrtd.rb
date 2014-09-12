@@ -254,7 +254,7 @@ class MRTD
     if squashed_passport && squashed_passport != ''
       candidates << "#{squashed_passport[0...44]}\n#{squashed_passport[44...88]}\n"
     end
-    squashed_id_regexp = /[AI].[A-Z<]{3}.{25}[0-9<]{7}[MFX<][0-9<]{7}.{14}[0-9<].{30}/
+    squashed_id_regexp = /[AIC].[A-Z<]{3}.{25}[0-9<]{7}[MFX<][0-9<]{7}.{14}[0-9<].{30}/
     squashed_id = squashed_candidate[squashed_id_regexp, 0]
     if squashed_id && squashed_id != ''
       candidates << "#{squashed_id[0...30]}\n#{squashed_id[30...60]}\n#{squashed_id[60...90]}\n"

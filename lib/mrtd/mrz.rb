@@ -429,6 +429,8 @@ class MRTD
         return :td1_ken
       elsif lines.count == 3 && lines[0].length == 30
         return :td1
+      elsif lines.count == 1 && lines[0].length == 30
+        return :td1_single
       elsif lines.count == 2 && lines[0].length == 36 &&
           document_code == 'ID' && issuing_country == 'FRA' &&
           @text[71] =~ /^[MF<X]$/
